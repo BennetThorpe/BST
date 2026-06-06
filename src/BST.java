@@ -29,7 +29,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     private boolean search(TreeNode<E> node,  E element) {
-        if (node == null) throw new IllegalArgumentException("NO NODE FOUND!!!");
+        if (node == null) return false;
         int compare = element.compareTo(node.element);
         if (compare < 0) return search(node.left, element); // if comparative is less than 0 we search down left side
         else if (compare > 0) return search(node.right, element); // if comparative is more than 0 we search down right side
@@ -44,8 +44,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     private TreeNode<E> delete(TreeNode<E> node,  E element) {
-        if (node == null) throw new IllegalArgumentException("NO NODE FOUND!!!");
-
+        if (node == null) return null;
         int compare = element.compareTo(node.element);
         if (compare < 0) node.left = delete(node.left, element);
         else if (compare > 0) node.right = delete(node.right, element);
@@ -88,6 +87,21 @@ public class BST<E extends Comparable<E>> {
             inorder(root.left);             // Visit left subtree
             System.out.print(root.element + " "); // Visit current node
             inorder(root.right);            // Visit right subtree
+        }
+    }
+
+    // Public method to perform reverse inorder traversal
+    public void reverseInorder() {
+        reverseInorder(root);
+        System.out.println();
+    }
+
+    // Recursive helper for reverse inorder traversal
+    private void reverseInorder(TreeNode<E> root) {
+        if (root != null) {
+            reverseInorder(root.right);            // Visit right subtree
+            System.out.println(root.element + " "); // Visit current node
+            reverseInorder(root.left);             // Visit left subtree
         }
     }
 

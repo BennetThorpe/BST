@@ -13,28 +13,28 @@ public class TaskManager {
 
     // Delete
     public void deleteByFirstPriority(int priority) {
-        Task target = findByFirstPriority(taskBST.root, priority);
+        Task target = findByPriority(taskBST.root, priority);
         if (target == null) throw new IllegalArgumentException("NO NODE FOUND!!!");
         taskBST.delete(target);
-        System.out.println("Target eliminated!");
+        System.out.println("Task Eliminated: " + target + " [Priority: " + priority + "]");
     }
 
-    public boolean searchByPriority( int priority) {
-        return findByFirstPriority(taskBST.root, priority) != null;
+    public boolean searchByPriority(int priority) {
+        return findByPriority(taskBST.root, priority) != null;
     }
 
-    // Print
-    public void printInorder() {
+    // Print used reverse inorder because it prints better. top to bottom in terminal
+    public void printReverseInorder() {
         System.out.println("Tasks in priority order:");
-        taskBST.inorder();
+        taskBST.reverseInorder();
     }
 
     // Find first by priority
-    private Task findByFirstPriority(BST.TreeNode<Task> node,  int priority) {
-        if (node == null) throw new IllegalArgumentException("NO NODE FOUND!!!");
+    private Task findByPriority(BST.TreeNode<Task> node,  int priority) {
+        if (node == null) return null;
         int nodePriority = node.element.getPriority();
-        if (nodePriority < 0) return findByFirstPriority(node.left, priority);
-        else if (nodePriority > 0) return findByFirstPriority(node.right, priority);
+        if (priority < nodePriority) return findByPriority(node.left, priority);
+        else if (priority > nodePriority) return findByPriority(node.right, priority);
         else return node.element;
     }
 
@@ -47,7 +47,30 @@ public class TaskManager {
         // TO IMPLEMENT: Create a TaskManager object
         // Use the TaskManager to insert tasks, search, delete, and print in priority order
         // This serves as your main test harness
+        TaskManager taskManager = new TaskManager();
 
+        taskManager.addTask(10, "1. wake up");
+        taskManager.addTask(7, "2. Walk around");
+        taskManager.addTask(3, "3. Look at birds");
+        taskManager.addTask(8, "4. Eat");
+        taskManager.addTask(2, "5. Look at goldfish");
 
+        taskManager.printReverseInorder();
+
+        System.out.println("======Tree Height======");
+        System.out.println(taskManager.height());
+        System.out.println();
+
+        System.out.println("======Search By Priority======");
+        System.out.println(taskManager.searchByPriority(2));
+        System.out.println(taskManager.searchByPriority(1));
+        System.out.println();
+
+        System.out.println("======Delete By Priority======");
+        taskManager.deleteByFirstPriority(7);
+        taskManager.deleteByFirstPriority(2);
+
+        System.out.println();
+        taskManager.printReverseInorder();
     }
 }
